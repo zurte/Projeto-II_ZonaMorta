@@ -1,5 +1,5 @@
 import pygame
-import nave
+import player
 
 pygame.init()
 
@@ -12,7 +12,7 @@ running = True
 
 lista_objetos = pygame.sprite.Group()
 
-player = nave.Nave(500,600,lista_objetos)
+player = player.Player(500,200,lista_objetos)
 
 fonte = pygame.font.Font(None,24)
 
@@ -20,7 +20,7 @@ fonte = pygame.font.Font(None,24)
 
 while running:
 
-    mensagem = fonte.render(f"posição{player.pos}\nvelocidade{player.vel}\n",True,(255,0,100))
+    mensagem = fonte.render(f"posição: {player.pos}\nvelocidade: {player.vel}\ncd_pulo: {player.cd_pulo}\nposição: {player.pos}",True,(255,0,100))
 
     clock.tick(60)
 
@@ -33,8 +33,10 @@ while running:
     lista_objetos.draw(tela)
     lista_objetos.update()
 
-    tela.blit(mensagem,(tela.get_width()*0.1,tela.get_height()*0.1))
-
+    tela.blit(mensagem,(tela.get_width()*0.01,tela.get_height()*0.01))
+    
+    pygame.draw.line(tela,(255,255,0),(0,600),(1024,600),2)
+    
     janela.flip()
 
 pygame.quit()
