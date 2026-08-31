@@ -10,10 +10,9 @@ clock = pygame.time.Clock()
 
 running = True
 
-player = nave.Nave(500,600)
-
 lista_objetos = pygame.sprite.Group()
-lista_objetos.add(player)
+
+player = nave.Nave(500,600,lista_objetos)
 
 fonte = pygame.font.Font(None,24)
 
@@ -33,7 +32,7 @@ while running:
 
     lista_objetos.draw(tela)
     lista_objetos.update()
-    
+
     tela.blit(mensagem,(tela.get_width()*0.1,tela.get_height()*0.1))
 
     janela.flip()
