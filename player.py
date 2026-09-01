@@ -12,7 +12,8 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.surface.Surface((40,60))
         self.image.fill((255,0,0))
         self.rect = self.image.get_rect()
-        self.rect.center = self.pos
+        self.rect.x = self.pos[0]
+        self.rect.y = self.pos[1]
         self.grupo = grupo
         self.add(self.grupo)
         self.vida = 3

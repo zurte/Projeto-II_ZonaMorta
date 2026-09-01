@@ -1,5 +1,6 @@
 import pygame
 import player
+import armas
 
 pygame.init()
 
@@ -13,6 +14,7 @@ running = True
 lista_objetos = pygame.sprite.Group()
 
 player = player.Player(500,200,lista_objetos)
+arma = armas.arma_base(player)
 
 fonte = pygame.font.Font(None,24)
 
