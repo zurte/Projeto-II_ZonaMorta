@@ -38,9 +38,9 @@ class arma_base(pygame.sprite.Sprite):
         if tecla[0] and self.atirou == False:
             tiro = projetil_base(self)
             self.atirou = True
-    
+
     def update(self):
-        
+
         self.mover()
         self.disparar()
 
