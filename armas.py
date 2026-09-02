@@ -69,6 +69,5 @@ class projetil_base(arma_base):
             self.arma.atirou  = False
             self.kill()
     def update(self):
-        print(self.vel)
         self.mover()
         self.limpar()

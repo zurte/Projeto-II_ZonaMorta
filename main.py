@@ -12,25 +12,33 @@ clock = pygame.time.Clock()
 
 running = True
 
+lista_plataformas = pygame.sprite.Group()
 lista_objetos = pygame.sprite.Group()
+
+mapa.desenhar_mapa(lista_plataformas)
+lista_objetos.add(lista_plataformas)
 
 player = player.Player(500,200,lista_objetos)
 arma = armas.arma_base(player)
 
 fonte = pygame.font.Font(None,24)
 
+
+
 while running:
-
-    mensagem = fonte.render(f"posição: {player.pos}\nvelocidade: {player.vel}\ncd_pulo: {player.cd_pulo}\nposição: {player.pos}",True,(255,0,100))
-
+    #DEBUG
+    mouse_pos = pygame.mouse.get_pos()
+    mensagem = fonte.render(f"posição: {player.pos}\nvelocidade: {player.vel}\ncd_pulo: {player.cd_pulo}\nposição: {player.pos},mouse:{mouse_pos[0]}",True,(255,0,100))
+    
+    
+    
     clock.tick(60)
 
     tela.fill((110,100,100))
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    mapa.desenhar_mapa(lista_objetos)
+    
     lista_objetos.draw(tela)
     lista_objetos.update()
 
