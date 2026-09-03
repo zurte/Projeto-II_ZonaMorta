@@ -38,31 +38,31 @@ class Player(pygame.sprite.Sprite):
         esquerda =  tecla_pressionada[pygame.K_a] or tecla_pressionada[pygame.K_LEFT]
         
         if direita:
-            self.vel[0] = pygame.math.lerp(self.vel[0],self.vel_max[0],0.1)
+            self.vel[0] = 5
 
-            self.pos[0] += self.vel[0]
+            #self.pos[0] += self.vel[0]
 
-            self.rect.x = self.pos[0]
+            #self.rect.x = self.pos[0]
 
         if esquerda:
-            self.vel[0] = pygame.math.lerp(self.vel[0],self.vel_max[0]*-1,0.1)
+            self.vel[0] = -5
 
-            self.pos[0] += self.vel[0]
+            #self.pos[0] += self.vel[0]
 
-            self.rect.x = self.pos[0]
+            #self.rect.x = self.pos[0]
 
         if (not direita) and (self.vel[0] > 0):
-            self.vel[0] = pygame.math.lerp(self.vel[0],0,0.1)
+            self.vel[0] = 0
 
-            self.pos[0] += self.vel[0]
+            #self.pos[0] += self.vel[0]
 
-            self.rect.x = self.pos[0]
+            #self.rect.x = self.pos[0]
 
             if round(self.vel[0]) == 0:
                 self.vel[0] = 0
 
         if (not esquerda) and (self.vel[0] < 0):
-            self.vel[0] = pygame.math.lerp(self.vel[0],0,0.1)
+            self.vel[0] = 0
 
             self.pos[0] += self.vel[0]
 
@@ -74,8 +74,10 @@ class Player(pygame.sprite.Sprite):
     def pulo(self):
         tecla_pulo = pygame.key.get_just_pressed()[pygame.K_SPACE]
         
-        if tecla_pulo:
+        if tecla_pulo and self.nmr_pulos > 0:
             self.vel[1] = -15
+            self.nmr_pulos -= 1
+            self.pulando = True
     """
             if tecla_pulo and self.cd_pulo <= 0 and self.nmr_pulos > 0:
                 self.pulando = True
@@ -94,29 +96,62 @@ class Player(pygame.sprite.Sprite):
                 self.pulando = False
                 self.vel[1] = 0
     """
-    def gravidade(self):
-        self.vel[1] += 0.5
-        self.pos[1] += self.vel[1]
-        self.rect.y = self.pos[1]
+    def fisica(self):
+        sensor = self.rect.move(0,1)
+        no_chao = False
+        
+        for bloco in self.grupo_colisao:
+            if bloco.__class__ == mapa.tiles[2]:
+                if sensor.colliderect(bloco.rect):#Se o sensor colidir com algum bloco
+                    no_chao = True#Indica que o player está no chão
+                    break#para o loop
+        
+        if not no_chao:
+            self.vel[1] += 0.5
+        else:
+            self.vel[1] = 0
+            self.nmr_pulos = 1
+        #self.pos[1] += self.vel[1]
+        #self.rect.y = self.pos[1]
+        
         
         colisao = pygame.sprite.spritecollide(self,self.grupo_colisao,False)
         
         for bloco in colisao:
-            print(bloco.__class__ == mapa.tiles[2])
             if bloco.__class__ == mapa.tiles[2]:
-                if self.vel[1] > 0:
-                    self.rect.bottom = bloco.rect.top
-                    self.pos[1] = self.rect.y
-                    self.vel[1] = 0
+                if self.vel[1] > 0:#Se estiver subindoa
+                    if self.rect.bottom >= bloco.rect.top:
+                        self.rect.bottom = bloco.rect.top
+                        self.pos[1] = self.rect.y
+                        self.vel[1] = 0
                         
-                    self.nmr_pulos = 1
                     
-                if self.vel[1] < 0:
+                    
+                elif self.vel[1] < 0:#se ele tiver caindo
                     self.vel[1] = 0
                     self.rect.top = bloco.rect.bottom
                     self.pos[1] = self.rect.y
+                
+            if bloco.__class__ == mapa.tiles[1]:    
+                if self.vel[0] > 0:#se ele tive indo para direita
+                    self.rect.right = bloco.rect.left
+                    self.pos[0] = self.rect.x
+                    self.vel[0] = 0
+                    
+                elif self.vel[0] < 0:#se ele tiver indo para esquerda
+                    self.rect.left = bloco.rect.right
+                    self.pos[0] = self.rect.x
+                    self.vel[0] = 0
+                
+                elif self.vel[1] < 0:#se ele tiver caindo
+                    self.vel[1] = 0
+                    self.rect.top = bloco.rect.bottom
+                    self.pos[1] = self.rect.y      
+                    
     def update(self):
-
+        self.fisica()
         self.movimento()
         self.pulo()
-        self.gravidade()
+        
+        
+        
