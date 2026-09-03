@@ -18,7 +18,7 @@ lista_objetos = pygame.sprite.Group()
 mapa.desenhar_mapa(lista_plataformas)
 lista_objetos.add(lista_plataformas)
 
-player = player.Player(500,200,lista_objetos)
+player = player.Player(500,200,lista_objetos,lista_plataformas)
 arma = armas.arma_base(player)
 
 fonte = pygame.font.Font(None,24)
