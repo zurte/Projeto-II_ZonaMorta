@@ -3,6 +3,7 @@ import player
 import armas
 import mapa
 
+import math
 
 pygame.init()
 
@@ -24,7 +25,7 @@ mapa.desenhar_mapa(lista_plataformas)
 
 lista_objetos.add(lista_plataformas)
 
-player = player.Player(500,200,lista_objetos,lista_plataformas)
+player = player.Player(LARGURA//2,ALTURA//2,lista_objetos,lista_plataformas)
 arma = armas.arma_base(player)
 
 fonte = pygame.font.Font(None,24)
@@ -62,8 +63,13 @@ while running:
         else:
             bloco.vel.y = 0#para o bloco
     
+    if player.rect.x < LARGURA//2 or player.rect.x > LARGURA//2:
+        player.rect.x = LARGURA//2
+        
+    pygame.draw.line(tela,(0,255,0),(player.rect.x,player.rect.y),(player.rect.right,player.rect.y),3)
     #EXIBIR DEBUG
-    mensagem = fonte.render(f"posição: {player.pos}\nvelocidade: {player.vel}\ncd_pulo: {player.cd_pulo}\nposição: {player.pos},mouse:{mouse_pos[0]}",True,(255,0,100))
+    mensagem = fonte.render(f"posição: {player.pos}\nvelocidade: {player.vel}\ncd_pulo: {player.cd_pulo},\ndireção:{player.direcao},\nposição: {player.pos},mouse:{mouse_pos[0]}",True,(255,0,100))
+    
     tela.blit(mensagem,(tela.get_width()*0.01,tela.get_height()*0.01))
 
     
