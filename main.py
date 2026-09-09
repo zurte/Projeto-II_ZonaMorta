@@ -35,44 +35,45 @@ fonte = pygame.font.Font(None,24)
 while running:
     #DEBUG
     mouse_pos = pygame.mouse.get_pos()
-    
-    
-    
-    
+
+
+
+
     clock.tick(60)
-    
+
     #limpa a tela
     tela.fill((110,100,100))
-    
+
     #fecha a janela
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
+
     lista_objetos.draw(tela)
     lista_objetos.update()
-    
+
     for bloco in lista_plataformas:#Para cada bloco dentro da lista
         if player.vel[0] != 0: # Se player tiver velocidade do eixo x
             bloco.vel.x = player.vel.x * -1 #velocidade dos blocos do mapa se iguala com a do player
         else:
             bloco.vel.x = 0 #para o bloco
-            
+
         if player.vel[1] != 0:#Se o player tiver velocidade no eixo y
             bloco.vel.y = player.vel.y * -1#velocidade dos blocos do mapa se iguala com a do player
         else:
             bloco.vel.y = 0#para o bloco
-    
+
     if player.rect.x < LARGURA//2 or player.rect.x > LARGURA//2:
         player.rect.x = LARGURA//2
-        
-    pygame.draw.line(tela,(0,255,0),(player.rect.x,player.rect.y),(player.rect.right,player.rect.y),3)
+
+
+
     #EXIBIR DEBUG
     mensagem = fonte.render(f"posição: {player.pos}\nvelocidade: {player.vel}\ncd_pulo: {player.cd_pulo},\ndireção:{player.direcao},\nposição: {player.pos},mouse:{mouse_pos[0]}",True,(255,0,100))
-    
+
     tela.blit(mensagem,(tela.get_width()*0.01,tela.get_height()*0.01))
 
-    
+
 
     janela.flip()
 

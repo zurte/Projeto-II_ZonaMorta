@@ -57,10 +57,10 @@ MAP = [
     # 38: Chão elevado do segundo andar inferior
     [0] + [0]*2 + [2]*15 + [0]*28 + [2]*15 + [0]*2 + [0],
     [0] + [0]*62 + [0],
-    [0] + [0]*62 + [0],
-    [0] + [0]*62 + [0],
+    [2] + [0]*62 + [0],
+    [2] + [0]*62 + [0],
     # 42 a 44: Chão principal do fundo do mapa e Base
-    [0] + [2]*62 + [0],
+    [2] + [2]*62 + [0],
     [1]*64,
     [1]*64
 ]
@@ -69,8 +69,7 @@ class parede(pygame.sprite.Sprite):
     def __init__(self,pos):
         super().__init__()
 
-        self.image = pygame.Surface((TILE_SIZE,TILE_SIZE))
-        self.image.fill((255,255,255))
+        self.image = pygame.image.load("./assets/img/terra_1.png")
         self.rect = self.image.get_rect()
         self.rect = self.image.get_rect(topleft=pos)
         self.vel = pygame.Vector2(0,0)
@@ -84,8 +83,7 @@ class chao(pygame.sprite.Sprite):
     def __init__(self,pos):
         super().__init__()
 
-        self.image = pygame.Surface((TILE_SIZE,TILE_SIZE))
-        self.image.fill((0,0,100))
+        self.image = pygame.image.load("./assets/img/chao.png")
         self.rect = self.image.get_rect()
         self.rect = self.image.get_rect(topleft=pos)
         self.vel = pygame.Vector2(0,0)

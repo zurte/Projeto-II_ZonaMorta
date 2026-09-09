@@ -10,9 +10,15 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(x=x,y=y)
         self.vel = pygame.Vector2(0,0)
         self.vel_max = pygame.Vector2(5,10)
+        #imagens
+        self.andando = [
+                                pygame.image.load("./assets/img/Prot_1.png"),
+                                pygame.image.load("./assets/img/Prot_2.png"),
+                                pygame.image.load("./assets/img/Prot_3.png")
+                                ]
+        self.frame_atual = 0
+        self.image = self.andando[self.frame_atual]
 
-        self.image = pygame.surface.Surface((40,60))
-        self.image.fill((255,0,0))
         self.rect = self.image.get_rect()
         self.rect.x = self.pos[0]
         self.rect.y = self.pos[1]
@@ -41,6 +47,8 @@ class Player(pygame.sprite.Sprite):
         if direita:
             self.vel[0] = 5
             self.direcao = 1
+            self.frame_atual = (self.frame_atual + 1) % len(self.andando)
+            self.image = self.andando[self.frame_atual]
         if esquerda:
             self.vel[0] = -5
             self.direcao = -1
@@ -72,7 +80,7 @@ class Player(pygame.sprite.Sprite):
             self.vel.y = -30
             self.nmr_pulos -= 1
             self.pulando = True
-    
+
     def fisica(self):
         sensor = self.rect.move(0,1)
         no_chao = False
@@ -95,18 +103,19 @@ class Player(pygame.sprite.Sprite):
                 self.pos[0] = self.rect.x
                 self.vel[0] = 0
 
+        #verifica se está no chão
         if not no_chao:
             self.vel[1] += 1
             if self.vel[1] >= 16:
                 self.vel[1] = 16
-        
+
 
 
         colisao_y = pygame.sprite.spritecollide(self,self.grupo_colisao,False)
 
         for bloco in colisao_y:
             if self.vel[1] > 0:#Se estiver caindo
-                print(self.rect.bottom > bloco.rect.top)
+
                 self.rect.bottom = bloco.rect.top
                 self.pos[1] = self.rect.y
                 self.vel[1] = 0
@@ -116,9 +125,9 @@ class Player(pygame.sprite.Sprite):
                 self.vel[1] = 0
                 self.rect.top = bloco.rect.bottom
                 self.pos[1] = self.rect.y
-                
-                
-        self.rect.centerx = self.rect.x   
+
+
+        self.rect.centerx = self.rect.x
 
     def update(self):
         self.movimento()
