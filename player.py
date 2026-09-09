@@ -10,14 +10,14 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(x=x,y=y)
         self.vel = pygame.Vector2(0,0)
         self.vel_max = pygame.Vector2(5,10)
+
         #imagens
-        self.andando = [
-                                pygame.image.load("./assets/img/Prot_1.png"),
-                                pygame.image.load("./assets/img/Prot_2.png"),
-                                pygame.image.load("./assets/img/Prot_3.png")
-                                ]
+        self.image_grup = [
+                        pygame.image.load("./assets/img/protagonista/prot_andando (1).png")
+                        ]
         self.frame_atual = 0
-        self.image = self.andando[self.frame_atual]
+        self.velocidade_animacao = 30
+        self.image = self.image_grup[self.frame_atual]
 
         self.rect = self.image.get_rect()
         self.rect.x = self.pos[0]
@@ -47,8 +47,6 @@ class Player(pygame.sprite.Sprite):
         if direita:
             self.vel[0] = 5
             self.direcao = 1
-            self.frame_atual = (self.frame_atual + 1) % len(self.andando)
-            self.image = self.andando[self.frame_atual]
         if esquerda:
             self.vel[0] = -5
             self.direcao = -1
@@ -129,7 +127,34 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.centerx = self.rect.x
 
+    def animacao(self):
+        self.velocidade_animacao -= 1
+        #andando para a direita
+        if self.vel.x > 0:
+            self.image_grup = [
+                pygame.image.load("./assets/img/protagonista/prot_andando (1).png"),
+                pygame.image.load("./assets/img/protagonista/prot_andando (2).png"),
+                pygame.image.load("./assets/img/protagonista/prot_andando (3).png")
+            ]
+        #andando para a esquerda
+        elif self.vel.x < 0:
+            self.image_grup = [
+                pygame.image.load("./assets/img/protagonista/prot_andando_esq (1).png"),
+                pygame.image.load("./assets/img/protagonista/prot_andando_esq (2).png"),
+                pygame.image.load("./assets/img/protagonista/prot_andando_esq (3).png")
+            ]
+        #parado
+        else:
+           self.image_grup = [
+                pygame.image.load("./assets/img/protagonista/prot_andando (1).png")
+                ] 
+        if self.velocidade_animacao == 0:
+            self.frame_atual = (self.frame_atual + 1) % len(self.image_grup)
+            self.image = self.image_grup[self.frame_atual]
+            self.velocidade_animacao = 30
+
     def update(self):
         self.movimento()
         self.fisica()
         self.pulo()
+        self.animacao()
