@@ -2,6 +2,7 @@ import pygame
 import player
 import armas
 import mapa
+import inimigos
 
 import math
 
@@ -54,7 +55,8 @@ while running:
                     mostrar_debug = True
                 else:
                     mostrar_debug = False
-
+            if event.key == pygame.K_f:
+                zumbi_obj = inimigos.inimigo_base(lista_objetos,mouse_pos[0],mouse_pos[1])
     
     lista_objetos.update()
 

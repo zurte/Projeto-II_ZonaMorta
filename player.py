@@ -4,9 +4,9 @@ import mapa
 pygame.init()
 
 spr_andando_direita = [
-    pygame.image.load("./assets/img/protagonista/andando/prot_andando (1).png"),
-    pygame.image.load("./assets/img/protagonista/andando/prot_andando (2).png"),
-    pygame.image.load("./assets/img/protagonista/andando/prot_andando (3).png")
+    pygame.image.load("../assets/img/protagonista/andando/prot_andando (1).png"),
+    pygame.image.load("../assets/img/protagonista/andando/prot_andando (2).png"),
+    pygame.image.load("../assets/img/protagonista/andando/prot_andando (3).png")
 ]
 spr_andando_esquerda = [pygame.transform.flip(i,1,0) for i in spr_andando_direita]
 
@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
 
         #imagens
         self.image_grup = [
-                        pygame.image.load("./assets/img/protagonista/parado/prot_parado.png")
+                        pygame.image.load("../assets/img/protagonista/parado/prot_parado.png")
                         ]
         self.frame_atual = 0
         self.velocidade_animacao = 30
@@ -37,7 +37,7 @@ class Player(pygame.sprite.Sprite):
 
         self.vida = 3
         self.pulando = False
-        self.nmr_pulos = 2
+        self.nmr_pulos = 1
         self.direcao = 1
 
         #Temporizadores
@@ -121,11 +121,11 @@ class Player(pygame.sprite.Sprite):
         else:
             if self.direcao == 1:
                 self.image_grup = [
-                    pygame.image.load("./assets/img/protagonista/parado/prot_parado.png")
+                    pygame.image.load("../assets/img/protagonista/parado/prot_parado.png")
                     ]
             elif self.direcao == -1:
                 self.image_grup = [
-                    pygame.image.load("./assets/img/protagonista/parado/prot_parado_esq.png")
+                    pygame.image.load("../assets/img/protagonista/parado/prot_parado_esq.png")
                     ]
         if self.velocidade_animacao <= 0:
             self.frame_atual = (self.frame_atual + 1) % len(self.image_grup)

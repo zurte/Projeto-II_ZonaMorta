@@ -20,7 +20,7 @@ class parede(pygame.sprite.Sprite):
     def __init__(self,pos):
         super().__init__()
 
-        self.image = pygame.image.load("./assets/img/terra_1.png")
+        self.image = pygame.image.load("../assets/img/terra_1.png")
         self.rect = self.image.get_rect(topleft=pos)
         self.vel = pygame.Vector2(0,0)
 
@@ -33,7 +33,7 @@ class chao(pygame.sprite.Sprite):
     def __init__(self,pos):
         super().__init__()
 
-        self.image = pygame.image.load("./assets/img/chao.png")
+        self.image = pygame.image.load("../assets/img/chao.png")
         self.rect = self.image.get_rect(topleft=pos)
         self.vel = pygame.Vector2(0,0)
 
