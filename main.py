@@ -16,6 +16,8 @@ ALTURA = tela.get_height()
 
 clock = pygame.time.Clock()
 
+mostrar_debug = False
+
 running = True
 
 lista_plataformas = pygame.sprite.Group()#Lista de blocos do mapa
@@ -46,6 +48,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_F2:
+                if mostrar_debug == False:
+                    mostrar_debug = True
+                else:
+                    mostrar_debug = False
 
     
     lista_objetos.update()
@@ -80,9 +88,13 @@ while running:
 
     lista_objetos.draw(tela)
 
+
     #EXIBIR DEBUG
-    mensagem = fonte.render(f"Posição Player: {player_obj.pos} | Offset Mapa: {offset_x} / {max_offset_x} | velocidade do player: velx{player_obj.vel.x} vely{player_obj.vel.y}", True, (255, 0, 100))
-    tela.blit(mensagem,(tela.get_width()*0.01,tela.get_height()*0.01))
+    if mostrar_debug:
+        mensagem = fonte.render(f"Posição Player: {player_obj.pos} | Offset Mapa: {offset_x} / {max_offset_x} | velocidade do player: velx{player_obj.vel.x} vely{player_obj.vel.y}", True, (255, 0, 100))
+        tela.blit(mensagem,(tela.get_width()*0.01,tela.get_height()*0.01))
+        pygame.draw.line(tela,(255,0,0),(player_obj.rect.x,player_obj.rect.y),(player_obj.rect.right,player_obj.rect.y))
+
 
 
 

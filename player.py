@@ -3,6 +3,14 @@ import mapa
 
 pygame.init()
 
+spr_andando_direita = [
+    pygame.image.load("./assets/img/protagonista/andando/prot_andando (1).png"),
+    pygame.image.load("./assets/img/protagonista/andando/prot_andando (2).png"),
+    pygame.image.load("./assets/img/protagonista/andando/prot_andando (3).png")
+]
+spr_andando_esquerda = [pygame.transform.flip(i,1,0) for i in spr_andando_direita]
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self,x,y,grupo,grupo_colisao):
         #inicialisações
@@ -105,18 +113,10 @@ class Player(pygame.sprite.Sprite):
         self.velocidade_animacao -= 1
         #andando para a direita
         if self.vel.x > 0:
-            self.image_grup = [
-                pygame.image.load("./assets/img/protagonista/andando/prot_andando (1).png"),
-                pygame.image.load("./assets/img/protagonista/andando/prot_andando (2).png"),
-                pygame.image.load("./assets/img/protagonista/andando/prot_andando (3).png")
-            ]
+            self.image_grup = spr_andando_direita
         #andando para a esquerda
         elif self.vel.x < 0:
-            self.image_grup = [
-                pygame.image.load("./assets/img/protagonista/andando/prot_andando_esq (1).png"),
-                pygame.image.load("./assets/img/protagonista/andando/prot_andando_esq (2).png"),
-                pygame.image.load("./assets/img/protagonista/andando/prot_andando_esq (3).png")
-            ]
+            self.image_grup = spr_andando_esquerda
         #parado
         else:
             if self.direcao == 1:
@@ -133,7 +133,8 @@ class Player(pygame.sprite.Sprite):
             self.velocidade_animacao = 30
 
     def update(self):
+        self.animacao()
         self.movimento()
         self.fisica()
         self.pulo()
-        self.animacao()
+        

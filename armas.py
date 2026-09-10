@@ -1,4 +1,5 @@
 import pygame
+import player
 import math
 
 pygame.init()
@@ -9,11 +10,12 @@ class arma_base(pygame.sprite.Sprite):
         self.player = player
         self.pos = pygame.math.Vector2(self.player.rect.x ,self.player.rect.y)
 
-        self.image = pygame.Surface((30,10))
-        self.image.fill((0,0,50))
-
+        self.spr = pygame.image.load("./assets/img/armas/arma.png")
+        self.spr_2 = pygame.transform.flip(self.spr,1,0)
+        self.image = self.spr
         self.rect = self.image.get_rect()
         #self.rect.center = self.pos
+        self.direcao = 1
 
         self.grupo  = self.player.grupo
         self.add(self.grupo)
@@ -22,11 +24,16 @@ class arma_base(pygame.sprite.Sprite):
 
     def mover(self):
         if self.player.direcao > 0:
-            self.rect.x = self.player.rect.centerx + self.player.rect.width*0.7
+            self.rect.x = self.player.rect.x + self.player.rect.width *0.95
         else:
-            self.rect.x = self.player.rect.centerx - self.player.rect.width*0.3
+            self.rect.x = self.player.rect.x - self.player.rect.width*0.07
             
         self.rect.y = self.player.rect.centery - self.player.rect.height*0.3
+    def animacao(self):
+        if self.player.image_grup == player.spr_andando_esquerda:
+            self.image = self.spr_2
+        elif self.player.image_grup == player.spr_andando_direita:
+            self.image = self.spr
 
     def disparar(self):
         tecla = pygame.mouse.get_pressed()
@@ -36,7 +43,7 @@ class arma_base(pygame.sprite.Sprite):
             self.atirou = True
 
     def update(self):
-
+        self.animacao()
         self.mover()
         self.disparar()
 
