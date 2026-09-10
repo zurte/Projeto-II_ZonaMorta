@@ -25,23 +25,21 @@ mapa.desenhar_mapa(lista_plataformas)
 
 lista_objetos.add(lista_plataformas)
 
-player = player.Player(LARGURA//2,ALTURA//2,lista_objetos,lista_plataformas)
-arma = armas.arma_base(player)
+player_obj = player.Player(LARGURA//2,400,lista_objetos,lista_plataformas)
+arma_obj = armas.arma_base(player_obj)
 
 fonte = pygame.font.Font(None,24)
 
+LARGURA_MAPA = len(mapa.MAP[0])* mapa.TILE_SIZE
+offset_x = 0
+max_offset_x = -(LARGURA_MAPA - LARGURA)
 
 #LOOP PRINCIPAL
 while running:
     #DEBUG
     mouse_pos = pygame.mouse.get_pos()
-
-
-
-
     clock.tick(60)
 
-    #limpa a tela
     tela.fill((110,100,100))
 
     #fecha a janela
@@ -49,28 +47,41 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    lista_objetos.draw(tela)
+    
     lista_objetos.update()
 
+    velocidade_mapa = 0
+
+    if player_obj.vel.x > 0:
+        if player_obj.rect.centerx >= LARGURA // 2 and offset_x > max_offset_x:
+
+            velocidade_mapa = -player_obj.vel.x
+            offset_x += velocidade_mapa
+            player_obj.rect.centerx = LARGURA//2
+            player_obj.pos[0] = player_obj.rect.x
+        else:
+            player_obj.rect.x += player_obj.vel.x
+            player_obj.pos[0] = player_obj.rect.x
+    elif player_obj.vel.x < 0:
+        if player_obj.rect.centerx <= LARGURA // 2 and offset_x < 0:
+
+            velocidade_mapa = -player_obj.vel.x
+            offset_x += velocidade_mapa
+            player_obj.rect.centerx = LARGURA // 2
+            player_obj.pos[0] = player_obj.rect.x
+
+        else:
+            player_obj.rect.x += player_obj.vel.x
+            player_obj.pos[0] = player_obj.rect.x
+
+    
     for bloco in lista_plataformas:#Para cada bloco dentro da lista
-        if player.vel[0] != 0: # Se player tiver velocidade do eixo x
-            bloco.vel.x = player.vel.x * -1 #velocidade dos blocos do mapa se iguala com a do player
-        else:
-            bloco.vel.x = 0 #para o bloco
+        bloco.vel.x = velocidade_mapa
 
-        if player.vel[1] != 0:#Se o player tiver velocidade no eixo y
-            bloco.vel.y = player.vel.y * -1#velocidade dos blocos do mapa se iguala com a do player
-        else:
-            bloco.vel.y = 0#para o bloco
-
-    if player.rect.x < LARGURA//2 or player.rect.x > LARGURA//2:
-        player.rect.x = LARGURA//2
-
-
+    lista_objetos.draw(tela)
 
     #EXIBIR DEBUG
-    mensagem = fonte.render(f"posição: {player.pos}\nvelocidade: {player.vel}\ncd_pulo: {player.cd_pulo},\ndireção:{player.direcao},\nposição: {player.pos},mouse:{mouse_pos[0]}",True,(255,0,100))
-
+    mensagem = fonte.render(f"Posição Player: {player_obj.pos} | Offset Mapa: {offset_x} / {max_offset_x} | velocidade do player: velx{player_obj.vel.x} vely{player_obj.vel.y}", True, (255, 0, 100))
     tela.blit(mensagem,(tela.get_width()*0.01,tela.get_height()*0.01))
 
 

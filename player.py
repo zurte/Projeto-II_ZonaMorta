@@ -28,7 +28,6 @@ class Player(pygame.sprite.Sprite):
         self.grupo_colisao = grupo_colisao
 
         self.vida = 3
-
         self.pulando = False
         self.nmr_pulos = 2
         self.direcao = 1
@@ -47,35 +46,17 @@ class Player(pygame.sprite.Sprite):
         if direita:
             self.vel[0] = 5
             self.direcao = 1
-        if esquerda:
+        elif esquerda:
             self.vel[0] = -5
             self.direcao = -1
-
-        if (not direita) and (self.vel[0] > 0):
+        else:
             self.vel[0] = 0
-
-            #self.pos[0] += self.vel[0]
-
-            #self.rect.x = self.pos[0]
-
-            if round(self.vel[0]) == 0:
-                self.vel[0] = 0
-
-        if (not esquerda) and (self.vel[0] < 0):
-            self.vel[0] = 0
-
-            self.pos[0] += self.vel[0]
-
-            self.rect.x = self.pos[0]
-
-            if round(self.vel[0]) == 0:
-                self.vel[0] = 0
-
+        
     def pulo(self):
         tecla_pulo = pygame.key.get_just_pressed()[pygame.K_SPACE]
 
         if tecla_pulo and self.nmr_pulos > 0:
-            self.vel.y = -30
+            self.vel.y = -18
             self.nmr_pulos -= 1
             self.pulando = True
 
@@ -87,19 +68,7 @@ class Player(pygame.sprite.Sprite):
             if sensor.colliderect(bloco.rect):#Se o sensor colidir com algum bloco
                 no_chao = True#Indica que o player está no chão
                 break#para o loop
-
-        colisao_x =  pygame.sprite.spritecollide(self,self.grupo_colisao,False)
-
-        for bloco in colisao_x:
-            if self.vel[0] > 0:#se ele tive indo para direita
-                self.rect.right = bloco.rect.left
-                self.pos[0] = self.rect.x
-                self.vel[0] = 0
-
-            if self.vel[0] < 0:#se ele tiver indo para esquerda
-                self.rect.left = bloco.rect.right
-                self.pos[0] = self.rect.x
-                self.vel[0] = 0
+        
 
         #verifica se está no chão
         if not no_chao:
@@ -107,25 +76,30 @@ class Player(pygame.sprite.Sprite):
             if self.vel[1] >= 16:
                 self.vel[1] = 16
 
-
+        self.pos[1] += self.vel[1]
+        self.rect.y = self.pos[1]
 
         colisao_y = pygame.sprite.spritecollide(self,self.grupo_colisao,False)
 
         for bloco in colisao_y:
-            if self.vel[1] > 0:#Se estiver caindo
+            if self.vel[1] > 0:#caindo
 
                 self.rect.bottom = bloco.rect.top
                 self.pos[1] = self.rect.y
                 self.vel[1] = 0
                 self.nmr_pulos = 2
 
-            if self.vel[1] < 0:#se ele tiver subindo
+            if self.vel[1] < 0:#subindo
                 self.vel[1] = 0
                 self.rect.top = bloco.rect.bottom
                 self.pos[1] = self.rect.y
 
-
-        self.rect.centerx = self.rect.x
+        if self.rect.left < 0:
+            self.rect.left = 0
+            self.pos[0] = self.rect.x
+        elif self.rect.right > 1024:
+            self.rect.right = 1024
+            self.pos[0] = self.rect.x
 
     def animacao(self):
         self.velocidade_animacao -= 1
@@ -153,7 +127,7 @@ class Player(pygame.sprite.Sprite):
                 self.image_grup = [
                     pygame.image.load("./assets/img/protagonista/parado/prot_parado_esq.png")
                     ]
-        if self.velocidade_animacao == 0:
+        if self.velocidade_animacao <= 0:
             self.frame_atual = (self.frame_atual + 1) % len(self.image_grup)
             self.image = self.image_grup[self.frame_atual]
             self.velocidade_animacao = 30
