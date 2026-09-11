@@ -1,8 +1,5 @@
 import pygame
-import player
-import armas
-import mapa
-import inimigos
+
 
 import telas.menu as menu
 import telas.gameplay as gameplay   
@@ -21,7 +18,7 @@ ALTURA = tela.get_height()
 
 state = {
     "Menu": menu.Menu(janela),
-    "GamePlay": gameplay.GamePlay(tela)
+    "GamePlay": gameplay.GamePlay(janela)
     #"GameOver": gameplay.GameOver(tela)
 }
 
@@ -30,19 +27,18 @@ jogo.run()
 
 clock = pygame.time.Clock()
 
-mostrar_debug = False
+
 
 running = True
 
-lista_plataformas = pygame.sprite.Group()#Lista de blocos do mapa
-lista_objetos = pygame.sprite.Group()#lista de todos os objetos do jogo
 
-mapa.desenhar_mapa(lista_plataformas)
 
-lista_objetos.add(lista_plataformas)
 
-player_obj = player.Player(LARGURA//2,400,lista_objetos,lista_plataformas)
-arma_obj = armas.arma_base(player_obj)
+
+
+
+
+
 
 fonte = pygame.font.Font(None,24)
 
