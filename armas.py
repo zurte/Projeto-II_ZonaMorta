@@ -10,7 +10,7 @@ class arma_base(pygame.sprite.Sprite):
         self.player = player
         self.pos = pygame.math.Vector2(self.player.rect.x ,self.player.rect.y)
 
-        self.spr = pygame.image.load("../assets/img/armas/arma.png")
+        self.spr = pygame.image.load("./assets/img/armas/arma.png")
         self.spr_2 = pygame.transform.flip(self.spr,1,0)
         self.image = self.spr
         self.rect = self.image.get_rect()

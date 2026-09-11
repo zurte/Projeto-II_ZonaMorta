@@ -4,6 +4,10 @@ import armas
 import mapa
 import inimigos
 
+import telas.menu as menu
+import telas.gameplay as gameplay   
+from jogo import Jogo
+
 import math
 
 pygame.init()
@@ -14,6 +18,15 @@ tela = janela.get_surface()#Tela onde de fato roda o jogo
 #dimensões da tela
 LARGURA = tela.get_width()
 ALTURA = tela.get_height()
+
+state = {
+    "Menu": menu.Menu(janela),
+    "GamePlay": gameplay.GamePlay(tela)
+    #"GameOver": gameplay.GameOver(tela)
+}
+
+jogo = Jogo(state)
+jogo.run()
 
 clock = pygame.time.Clock()
 
@@ -38,6 +51,7 @@ offset_x = 0
 max_offset_x = -(LARGURA_MAPA - LARGURA)
 
 #LOOP PRINCIPAL
+"""
 while running:
     #DEBUG
     mouse_pos = pygame.mouse.get_pos()
@@ -101,5 +115,5 @@ while running:
 
 
     janela.flip()
-
+"""
 pygame.quit()
