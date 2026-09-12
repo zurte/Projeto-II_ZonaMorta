@@ -50,6 +50,5 @@ class Menu:
         elif tecla[pygame.K_RETURN]:
             if self.opcao_atual == 0:
                 self.avancar = True
-                print(self.avancar)
             else:
                 self.sair = True

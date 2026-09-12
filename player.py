@@ -95,7 +95,7 @@ class Player(pygame.sprite.Sprite):
                 self.rect.bottom = bloco.rect.top
                 self.pos[1] = self.rect.y
                 self.vel[1] = 0
-                self.nmr_pulos = 2
+                self.nmr_pulos = 1
 
             if self.vel[1] < 0:#subindo
                 self.vel[1] = 0

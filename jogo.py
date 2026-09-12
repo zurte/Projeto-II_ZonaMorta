@@ -25,11 +25,10 @@ class Jogo:
             
             tela_obj.update()
             tela_obj.draw()
-
+            
             if tela_obj.avancar:
                 self.mudar_tela(tela_obj.proxima_tela)
             elif tela_obj.sair:
                 self.running = False
                 
-            print(tela_obj.avancar)
         pygame.quit()
