@@ -21,7 +21,9 @@ class arma_base(pygame.sprite.Sprite):
         self.grupo  = self.player.grupo
         self.add(self.grupo)
 
-        self.atirou = False
+        self.municao = 12
+        self.cd = 0
+        self.recarregando = False
 
     def mover(self):
         if self.player.direcao > 0:
@@ -39,14 +41,21 @@ class arma_base(pygame.sprite.Sprite):
 
     def disparar(self):
         tecla = pygame.mouse.get_pressed()
+        self.cd -= 1
+        if not self.recarregando:
+            if tecla[0] and self.municao > 0 and self.cd <= 0:
+                tiro = projetil_base(self,self.lista_colisao)
+                self.municao -= 1
+                self.cd = 30
 
-        if tecla[0] and self.atirou == False:
-            tiro = projetil_base(self,self.lista_colisao)
-            self.atirou = True
+    def recarregar(self):
+        if self.municao <= 0:
+            self.recarregando = True         
 
     def update(self):
         self.animacao()
         self.mover()
+        self.recarregar()
         self.disparar()
 
 class projetil_base(arma_base):
@@ -77,14 +86,12 @@ class projetil_base(arma_base):
         for i in colisor:
             if self.rect.colliderect(i):
                 i.vida -= self.dano
-                self.arma.atirou = False
                 self.kill()
         
         
 
     def limpar(self):
         if self.rect.x > 1024 or self.rect.x <  0:
-            self.arma.atirou  = False
             self.kill()
     def update(self):
         self.mover()

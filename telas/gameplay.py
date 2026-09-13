@@ -95,7 +95,7 @@ class GamePlay:
                 self.mostrar_debug = False
 
         if self.mostrar_debug:
-            mensagem = self.fonte.render(f"Posição Player: {self.player_obj.pos} | Offset Mapa: {self.offset_x} / {self.max_offset_x} | velocidade mapa: {self.velocidade_mapa}", True, (255, 0, 100))
+            mensagem = self.fonte.render(f"Posição Player: {self.player_obj.pos} | Offset Mapa: {self.offset_x} / {self.max_offset_x} | velocidade mapa: {self.velocidade_mapa}\nARMA: muniçao:{self.arma_obj.municao} | recarregando:{self.arma_obj.recarregando}", True, (255, 0, 100))
             self.tela.blit(mensagem,(self.tela.get_width()*0.01,self.tela.get_height()*0.01))
 
     def update(self):
