@@ -41,7 +41,9 @@ class Player(pygame.sprite.Sprite):
 
         self.vida_atual = 100
         self.vida_max = 100
-        self.
+        self.invuneravel = False
+        self.tempo_invuneravel  = 0
+
 
         self.pulando = False
         self.nmr_pulos = 1
@@ -77,16 +79,24 @@ class Player(pygame.sprite.Sprite):
 
         colisor = pygame.sprite.spritecollide(self,self.grupo_inimigos,False)
 
+        if not self.invuneravel:
+            for i in colisor:
+                self.vel[0] += i.vel[0]*10
+                self.vel[1] -= 10
+                self.vida_atual -= i.dano
+                self.invuneravel = True
+                self.tempo_invuneravel = 90
 
-        for i in colisor:
-            self.rect.x += -i.vel[0]*5
-            self.rect.y += 5
-            self.vida_atual -= i.dano
+        if self.tempo_invuneravel > 0:
+            self.tempo_invuneravel -= 1
+        else:
+            self.invuneravel = False
 
         if self.vida_atual < 0:
             self.vida_atual = 0
         elif self.vida_atual > self.vida_max:
             self.vida_atual = self.vida_max
+            
 
     def movimento(self):
 
@@ -96,14 +106,20 @@ class Player(pygame.sprite.Sprite):
         esquerda =  tecla_pressionada[pygame.K_a] or tecla_pressionada[pygame.K_LEFT]
 
         if direita:
-            self.vel[0] = 5
+            self.vel[0] += 1
+            if self.vel[0] >= self.vel_max[0]:
+                self.vel[0] = self.vel_max[0]
             self.direcao = 1
         elif esquerda:
-            self.vel[0] = -5
+            self.vel[0] -= 1
+            if self.vel[0] <= -self.vel_max[0]:
+                self.vel[0] = -self.vel_max[0]
             self.direcao = -1
         else:
-            self.vel[0] = 0
-        
+            if self.vel[0] > 0:
+                self.vel[0] -= 1
+            elif self.vel[0] < 0:
+                self.vel[0] += 1
     def pulo(self):
         tecla_pulo = pygame.key.get_just_pressed()[pygame.K_SPACE]
 
@@ -177,10 +193,10 @@ class Player(pygame.sprite.Sprite):
             self.velocidade_animacao = 30
 
     def update(self):
-        self.levar_dano()
         self.barra_de_vida()
         self.animacao()
         self.movimento()
         self.fisica()
         self.pulo()
+        self.levar_dano()
         
