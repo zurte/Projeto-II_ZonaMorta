@@ -50,8 +50,34 @@ class Player(pygame.sprite.Sprite):
         self.cd_pulo = 0
 
     def barra_de_vida(self):
-        pygame.draw.rect(self.tela,(255,255,255),(self.largura_tela*0.01,self.altura_tela*0.021,self.vida_max*3,20))
-        pygame.draw.rect(self.tela,(0,255,0),(self.largura_tela*0.012,self.altura_tela*0.023,self.vida_atual*2.96,18))
+
+        mod = self.vida_max - self.vida_atual
+
+        r = 0
+        g = 255
+        b= 50
+
+        r += mod*5
+        g -= mod*5
+
+        if r >= 255:
+            r = 255
+        elif r <= 0:
+            r = 0
+        if g >= 255:
+            g = 255
+        elif g <= 0:
+            g = 0
+        pygame.draw.rect(self.tela,(0,0,0),(self.largura_tela*0.01,self.altura_tela*0.021,self.vida_max*3,20))
+        pygame.draw.rect(self.tela,(r,g,b),(self.largura_tela*0.012,self.altura_tela*0.023,self.vida_atual*2.96,18))
+
+    def levar_dano(self):
+        t = pygame.key.get_pressed()
+
+        if t[pygame.K_c]:
+            self.vida_atual -= 1
+        elif t[pygame.K_v]:
+            self.vida_atual += 1
 
     def movimento(self):
 
@@ -142,6 +168,7 @@ class Player(pygame.sprite.Sprite):
             self.velocidade_animacao = 30
 
     def update(self):
+        self.levar_dano()
         self.barra_de_vida()
         self.animacao()
         self.movimento()
