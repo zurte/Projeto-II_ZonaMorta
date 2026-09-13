@@ -5,8 +5,6 @@ import telas.menu as menu
 import telas.gameplay as gameplay   
 from jogo import Jogo
 
-import math
-
 pygame.init()
 
 #Iniciando a tela
