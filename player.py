@@ -12,12 +12,15 @@ spr_andando_esquerda = [pygame.transform.flip(i,1,0) for i in spr_andando_direit
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,x,y,grupo,grupo_colisao):
+    def __init__(self,x,y,grupo,grupo_colisao,tela):
         #inicialisações
         super().__init__()
         self.pos = pygame.Vector2(x=x,y=y)
         self.vel = pygame.Vector2(0,0)
         self.vel_max = pygame.Vector2(5,10)
+        self.tela = tela
+        self.largura_tela = self.tela.get_width()
+        self.altura_tela = self.tela.get_height()
 
         #imagens
         self.image_grup = [
@@ -35,7 +38,9 @@ class Player(pygame.sprite.Sprite):
         self.add(self.grupo)
         self.grupo_colisao = grupo_colisao
 
-        self.vida = 3
+        self.vida_atual = 100
+        self.vida_max = 100
+
         self.pulando = False
         self.nmr_pulos = 1
         self.direcao = 1
@@ -43,6 +48,10 @@ class Player(pygame.sprite.Sprite):
         #Temporizadores
         self.cd = 0
         self.cd_pulo = 0
+
+    def barra_de_vida(self):
+        pygame.draw.rect(self.tela,(255,255,255),(self.largura_tela*0.01,self.altura_tela*0.021,self.vida_max*3,20))
+        pygame.draw.rect(self.tela,(0,255,0),(self.largura_tela*0.012,self.altura_tela*0.023,self.vida_atual*2.96,18))
 
     def movimento(self):
 
@@ -133,6 +142,7 @@ class Player(pygame.sprite.Sprite):
             self.velocidade_animacao = 30
 
     def update(self):
+        self.barra_de_vida()
         self.animacao()
         self.movimento()
         self.fisica()
