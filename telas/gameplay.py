@@ -22,7 +22,7 @@ class GamePlay:
         self.lista_objetos = pygame.sprite.Group()#lista de todos os objetos do jogo
         self.lista_objetos.add(self.lista_plataformas)
         self.player_obj = Player(self.tela.get_width()//2,400,self.lista_objetos,self.lista_plataformas)
-        self.arma_obj = arma_base(self.player_obj)
+        self.arma_obj = arma_base(self.player_obj,self.lista_inimigos)
         #Variaveis
         self.proxima_tela = "GamePlay"
         self.avancar = False
@@ -39,8 +39,9 @@ class GamePlay:
 
     def spaw_inimigo(self):
         self.timer_inimigo -= 1
-        x_inimigo = random.choice([random.randint(0,self.player_obj.rect.x - 100),random.randint(self.player_obj.rect.x + 100,1024)])
+        
         if len(self.lista_inimigos) < self.numero_inimigo_max:
+            x_inimigo = random.choice([random.randint(0,self.player_obj.rect.x - 100),random.randint(self.player_obj.rect.x + 100,1024)])
             if self.timer_inimigo <= 0:
                 inimigo = inimigo_base(self.lista_inimigos,self.lista_plataformas,self.player_obj,x_inimigo,464)
                 self.lista_objetos.add(inimigo)

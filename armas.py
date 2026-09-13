@@ -1,14 +1,15 @@
 import pygame
 import player
-import math
+
 
 pygame.init()
 
 class arma_base(pygame.sprite.Sprite):
-    def __init__(self,player):
+    def __init__(self,player,lista_colisao):
         super().__init__()
         self.player = player
         self.pos = pygame.math.Vector2(self.player.rect.x ,self.player.rect.y)
+        self.lista_colisao = lista_colisao
 
         self.spr = pygame.image.load("./assets/img/armas/arma.png")
         self.spr_2 = pygame.transform.flip(self.spr,1,0)
@@ -29,6 +30,7 @@ class arma_base(pygame.sprite.Sprite):
             self.rect.x = self.player.rect.x - self.player.rect.width*0.07
             
         self.rect.y = self.player.rect.centery - self.player.rect.height*0.3
+
     def animacao(self):
         if self.player.image_grup == player.spr_andando_esquerda:
             self.image = self.spr_2
@@ -39,7 +41,7 @@ class arma_base(pygame.sprite.Sprite):
         tecla = pygame.mouse.get_pressed()
 
         if tecla[0] and self.atirou == False:
-            tiro = projetil_base(self)
+            tiro = projetil_base(self,self.lista_colisao)
             self.atirou = True
 
     def update(self):
@@ -48,12 +50,13 @@ class arma_base(pygame.sprite.Sprite):
         self.disparar()
 
 class projetil_base(arma_base):
-    def __init__(self,arma):
-        super().__init__(arma.player)
+    def __init__(self,arma,lista_colisao):
+        super().__init__(arma.player,arma.lista_colisao)
         self.arma = arma
         self.pos = pygame.math.Vector2(self.arma.rect.x,self.arma.rect.y)
         self.vel = pygame.math.Vector2(20* self.arma.player.direcao)
-
+        self.lista_colisao = lista_colisao
+        print(self.lista_colisao)
         self.image = pygame.Surface((10,10))
         self.image.fill((50,0,255))
 
@@ -63,9 +66,21 @@ class projetil_base(arma_base):
         self.grupo = self.arma.grupo
         self.add(self.grupo)
 
+        self.dano = 1
+
     def mover(self):
         self.pos[0] += self.vel[0]
         self.rect.x = self.pos[0]
+
+    def colisao(self):
+        colisor = pygame.sprite.spritecollide(self,self.lista_colisao,False)
+        for i in colisor:
+            if self.rect.colliderect(i):
+                i.vida -= self.dano
+                self.arma.atirou = False
+                self.kill()
+        
+        
 
     def limpar(self):
         if self.rect.x > 1024 or self.rect.x <  0:
@@ -73,4 +88,5 @@ class projetil_base(arma_base):
             self.kill()
     def update(self):
         self.mover()
+        self.colisao()
         self.limpar()

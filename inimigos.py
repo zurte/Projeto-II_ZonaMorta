@@ -20,12 +20,13 @@ class inimigo_base(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(x=x,y=y)
         self.vel = pygame.Vector2(0,0)
         self.alvo = alvo
+        self.deley_movimento = 5
 
         self.grupo = grupo
 
         self.spr = spr_inimigo_parado_esq
         self.spr_atual = 0
-        self.velocidade_animacao = 30
+        self.velocidade_animacao = 60
 
         self.image = self.spr[self.spr_atual]
 
@@ -33,15 +34,19 @@ class inimigo_base(pygame.sprite.Sprite):
 
         self.add(self.grupo)
         self.grupo_colisao = grupo_colisao
+
+        self.vida = 5
+
     def mover(self):
         if self.rect.x > self.alvo.rect.x:
-            self.vel[0] = -2
+            self.vel[0] = -1
             self.rect.x += self.vel[0]
             self.pos[0] = self.rect.x
         elif self.rect.x < self.alvo.rect.x:
-            self.vel[0] = 2
+            self.vel[0] = 1
             self.rect.x += self.vel[0]
             self.pos[0] = self.rect.x
+        self.deley_movimento = 60
     def fisica(self):
         sensor = self.rect.move(0,1)
         no_chao = False
@@ -86,11 +91,11 @@ class inimigo_base(pygame.sprite.Sprite):
             self.spr = spr_inimigo_mov_esq
         #parado
         else:
-            if self.direcao == 1:
+            if self.rect.x > self.alvo.rect.x:
                 self.spr = [
                     pygame.image.load("./assets/img/protagonista/parado/prot_parado.png")
                     ]
-            elif self.direcao == -1:
+            elif self.rect.x < self.alvo.rect.x:
                 self.spr = [
                     pygame.image.load("./assets/img/protagonista/parado/prot_parado_esq.png")
                     ]
@@ -98,7 +103,13 @@ class inimigo_base(pygame.sprite.Sprite):
             self.spr_atual = (self.spr_atual + 1) % len(self.spr)
             self.image = self.spr[self.spr_atual]
             self.velocidade_animacao = 30
+
+    def morrer(self):
+        if self.vida <= 0:
+            self.kill()
+
     def update(self):
+        self.morrer()
         self.fisica()
         self.mover()
         self.animacao()
