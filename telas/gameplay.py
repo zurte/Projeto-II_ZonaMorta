@@ -21,7 +21,7 @@ class GamePlay:
         mapa.desenhar_mapa(self.lista_plataformas)
         self.lista_objetos = pygame.sprite.Group()#lista de todos os objetos do jogo
         self.lista_objetos.add(self.lista_plataformas)
-        self.player_obj = Player(self.tela.get_width()//2,400,self.lista_objetos,self.lista_plataformas,self.tela)
+        self.player_obj = Player(self.tela.get_width()//2,400,self.lista_objetos,self.lista_plataformas,self.lista_inimigos,self.tela)
         self.arma_obj = arma_base(self.player_obj,self.lista_inimigos)
         #Variaveis
         self.proxima_tela = "GamePlay"

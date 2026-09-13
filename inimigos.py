@@ -36,6 +36,7 @@ class inimigo_base(pygame.sprite.Sprite):
         self.grupo_colisao = grupo_colisao
 
         self.vida = 5
+        self.dano = 10
 
     def mover(self):
         if self.rect.x > self.alvo.rect.x:

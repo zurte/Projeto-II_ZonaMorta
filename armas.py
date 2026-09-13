@@ -96,9 +96,8 @@ class projetil_base(arma_base):
     def colisao(self):
         colisor = pygame.sprite.spritecollide(self,self.lista_colisao,False)
         for i in colisor:
-            if self.rect.colliderect(i):
-                i.vida -= self.dano
-                self.kill()
+            i.vida -= self.dano
+            self.kill()
         
         
 

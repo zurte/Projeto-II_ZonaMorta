@@ -12,7 +12,7 @@ spr_andando_esquerda = [pygame.transform.flip(i,1,0) for i in spr_andando_direit
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,x,y,grupo,grupo_colisao,tela):
+    def __init__(self,x,y,grupo,grupo_colisao,grupo_inimigos,tela):
         #inicialisações
         super().__init__()
         self.pos = pygame.Vector2(x=x,y=y)
@@ -37,9 +37,11 @@ class Player(pygame.sprite.Sprite):
         self.grupo = grupo
         self.add(self.grupo)
         self.grupo_colisao = grupo_colisao
+        self.grupo_inimigos = grupo_inimigos
 
         self.vida_atual = 100
         self.vida_max = 100
+        self.
 
         self.pulando = False
         self.nmr_pulos = 1
@@ -68,16 +70,23 @@ class Player(pygame.sprite.Sprite):
             g = 255
         elif g <= 0:
             g = 0
-        pygame.draw.rect(self.tela,(0,0,0),(self.largura_tela*0.01,self.altura_tela*0.021,self.vida_max*3,20))
-        pygame.draw.rect(self.tela,(r,g,b),(self.largura_tela*0.012,self.altura_tela*0.023,self.vida_atual*2.96,18))
+        pygame.draw.rect(self.tela,(0,0,0),(self.largura_tela*0.01,self.altura_tela*0.021,self.vida_max*3,20),border_radius=20)
+        pygame.draw.rect(self.tela,(r,g,b),(self.largura_tela*0.012,self.altura_tela*0.023,self.vida_atual*2.96,18),border_radius=20)
 
     def levar_dano(self):
-        t = pygame.key.get_pressed()
 
-        if t[pygame.K_c]:
-            self.vida_atual -= 1
-        elif t[pygame.K_v]:
-            self.vida_atual += 1
+        colisor = pygame.sprite.spritecollide(self,self.grupo_inimigos,False)
+
+
+        for i in colisor:
+            self.rect.x += -i.vel[0]*5
+            self.rect.y += 5
+            self.vida_atual -= i.dano
+
+        if self.vida_atual < 0:
+            self.vida_atual = 0
+        elif self.vida_atual > self.vida_max:
+            self.vida_atual = self.vida_max
 
     def movimento(self):
 
