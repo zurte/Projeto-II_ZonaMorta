@@ -22,8 +22,11 @@ class arma_base(pygame.sprite.Sprite):
         self.add(self.grupo)
 
         self.municao = 12
+        self.municao_max = 12
         self.cd = 0
         self.recarregando = False
+        self.tempo_recarga = 20
+        self.vel_recarga = 10
 
     def mover(self):
         if self.player.direcao > 0:
@@ -50,8 +53,18 @@ class arma_base(pygame.sprite.Sprite):
 
     def recarregar(self):
         if self.municao <= 0:
-            self.recarregando = True         
+            self.recarregando = True
 
+        self.vel_recarga -= 1
+
+        if self.vel_recarga <= 0:
+            if (self.municao < self.municao_max) and self.recarregando:
+                self.municao += 1
+                #tocar som de recarregar
+                self.vel_recarga = 10      
+
+        if self.municao == self.municao_max:
+            self.recarregando = False
     def update(self):
         self.animacao()
         self.mover()
@@ -65,7 +78,6 @@ class projetil_base(arma_base):
         self.pos = pygame.math.Vector2(self.arma.rect.x,self.arma.rect.y)
         self.vel = pygame.math.Vector2(20* self.arma.player.direcao)
         self.lista_colisao = lista_colisao
-        print(self.lista_colisao)
         self.image = pygame.Surface((10,10))
         self.image.fill((50,0,255))
 
