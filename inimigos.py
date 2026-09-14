@@ -31,12 +31,15 @@ class inimigo_base(pygame.sprite.Sprite):
         self.image = self.spr[self.spr_atual]
 
         self.rect = self.image.get_rect(center = self.pos)
+        self.rect.width -= 25
+        self.rect.top += 15
 
         self.add(self.grupo)
         self.grupo_colisao = grupo_colisao
 
         self.vida = 5
         self.dano = 10
+        self.xp = 10
 
     def mover(self):
         if self.rect.x > self.alvo.rect.x:
@@ -48,6 +51,7 @@ class inimigo_base(pygame.sprite.Sprite):
             self.rect.x += self.vel[0]
             self.pos[0] = self.rect.x
         self.deley_movimento = 60
+
     def fisica(self):
         sensor = self.rect.move(0,1)
         no_chao = False
@@ -107,6 +111,7 @@ class inimigo_base(pygame.sprite.Sprite):
 
     def morrer(self):
         if self.vida <= 0:
+            self.alvo.xp_atual += self.xp
             self.kill()
 
     def update(self):

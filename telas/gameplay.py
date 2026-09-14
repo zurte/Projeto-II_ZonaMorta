@@ -36,6 +36,7 @@ class GamePlay:
         self.velocidade_mapa = 0
         self.timer_inimigo = 60
         self.numero_inimigo_max = 4
+        self.msg_atual= 0
 
     def spaw_inimigo(self):
         self.timer_inimigo -= 1
@@ -95,8 +96,23 @@ class GamePlay:
                 self.mostrar_debug = False
 
         if self.mostrar_debug:
-            mensagem = self.fonte.render(f"Posição Player: {self.player_obj.pos} | Offset Mapa: {self.offset_x} / {self.max_offset_x} | velocidade mapa: {self.velocidade_mapa} | Vida: {self.player_obj.vida_atual}/{self.player_obj.vida_max}\nARMA: muniçao:{self.arma_obj.municao} | recarregando:{self.arma_obj.recarregando}", True, (255, 0, 100))
-            self.tela.blit(mensagem,(self.tela.get_width()*0.01,self.tela.get_height()*0.1))
+            mensagem = self.fonte.render(f"MAPA: Offset Mapa: {self.offset_x} / {self.max_offset_x} | velocidade mapa: {self.velocidade_mapa} ", True, (255, 0, 100))
+            mensagem2 = self.fonte.render(f"PLAYER: Posição: {self.player_obj.pos} | Vida: {self.player_obj.vida_atual}/{self.player_obj.vida_max}| xp:{self.player_obj.xp_atual}/{self.player_obj.xp_meta} | nivel:{self.player_obj.nivel}", True, (255, 0, 100))
+            mensagem3 = self.fonte.render(f"ARMA: muniçao:{self.arma_obj.municao} | recarregando:{self.arma_obj.recarregando} ",True, (255, 0, 100))
+
+            msg_lista = [mensagem,mensagem2,mensagem3]
+            
+            self.tela.blit(msg_lista[self.msg_atual],(self.tela.get_width()*0.01,self.tela.get_height()*0.1))
+
+            if pygame.key.get_just_pressed()[pygame.K_TAB]:
+                self.msg_atual += 1
+                if self.msg_atual > 2:
+                    self.msg_atual = 0
+            for i in self.lista_inimigos:
+                pygame.draw.line(self.tela, (255, 0, 0), (i.rect.left, i.rect.top), (i.rect.right, i.rect.top))
+                pygame.draw.line(self.tela, (255, 0, 0), (i.rect.right, i.rect.top), (i.rect.right, i.rect.bottom))
+                pygame.draw.line(self.tela, (255, 0, 0), (i.rect.right, i.rect.bottom), (i.rect.left, i.rect.bottom))
+                pygame.draw.line(self.tela, (255, 0, 0), (i.rect.left, i.rect.bottom), (i.rect.left, i.rect.top))
 
     def update(self):
         self.spaw_inimigo()

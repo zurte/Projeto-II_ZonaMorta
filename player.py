@@ -44,6 +44,10 @@ class Player(pygame.sprite.Sprite):
         self.invuneravel = False
         self.tempo_invuneravel  = 0
 
+        self.nivel = 1
+        self.xp_atual = 0
+        self.xp_meta = self.nivel * 50
+
 
         self.pulando = False
         self.nmr_pulos = 1
@@ -72,8 +76,20 @@ class Player(pygame.sprite.Sprite):
             g = 255
         elif g <= 0:
             g = 0
-        pygame.draw.rect(self.tela,(0,0,0),(self.largura_tela*0.01,self.altura_tela*0.021,self.vida_max*3,20),border_radius=20)
-        pygame.draw.rect(self.tela,(r,g,b),(self.largura_tela*0.012,self.altura_tela*0.023,self.vida_atual*2.96,18),border_radius=20)
+        pygame.draw.rect(self.tela,(0,0,0),(self.largura_tela*0.01,self.altura_tela*0.032,self.vida_max*3,20),border_radius=20)
+        pygame.draw.rect(self.tela,(r,g,b),(self.largura_tela*0.012,self.altura_tela*0.034,self.vida_atual*2.96,18),border_radius=20)
+
+    def barra_de_xp(self):
+
+        r = 100
+        g = 100
+        b = 0
+
+        # Calcula a largura da barra de XP com base na meta de XP
+        largura_barra_xp = (self.xp_atual / self.xp_meta) * 1024
+
+        pygame.draw.rect(self.tela, (0, 0, 0), (0, 0, 1024, 20))
+        pygame.draw.rect(self.tela, (r, g, b), (0, 0, largura_barra_xp, 18))
 
     def levar_dano(self):
 
@@ -97,6 +113,13 @@ class Player(pygame.sprite.Sprite):
         elif self.vida_atual > self.vida_max:
             self.vida_atual = self.vida_max
             
+    def subir_nivel(self):
+
+        if self.xp_atual >= self.xp_meta:
+            self.xp_atual -= self.xp_meta
+            self.nivel += 1
+            self.vida_atual = self.vida_max
+            self.xp_meta = self.nivel * 50
 
     def movimento(self):
 
@@ -194,6 +217,8 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.barra_de_vida()
+        self.barra_de_xp()
+        self.subir_nivel()
         self.animacao()
         self.movimento()
         self.fisica()
