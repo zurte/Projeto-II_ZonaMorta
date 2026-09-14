@@ -1,6 +1,7 @@
 import pygame
 import mapa
 import random
+import cards
 from player import Player
 from armas import arma_base
 from inimigos import inimigo_base
@@ -23,6 +24,7 @@ class GamePlay:
         self.lista_objetos.add(self.lista_plataformas)
         self.player_obj = Player(self.tela.get_width()//2,400,self.lista_objetos,self.lista_plataformas,self.lista_inimigos,self.tela)
         self.arma_obj = arma_base(self.player_obj,self.lista_inimigos)
+        self.card = cards.card_base(self.player_obj,self.tela,self.lista_objetos)
         #Variaveis
         self.proxima_tela = "GamePlay"
         self.avancar = False
