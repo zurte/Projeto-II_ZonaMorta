@@ -24,7 +24,6 @@ class GamePlay:
         self.lista_objetos.add(self.lista_plataformas)
         self.player_obj = Player(self.tela.get_width()//2,400,self.lista_objetos,self.lista_plataformas,self.lista_inimigos,self.tela)
         self.arma_obj = arma_base(self.player_obj,self.lista_inimigos)
-        self.card = cards.card_velocidade_total(self.player_obj,self.tela,self.lista_objetos)
         #Variaveis
         self.proxima_tela = "GamePlay"
         self.avancar = False

@@ -86,8 +86,7 @@ class projetil_base(arma_base):
         self.pos = pygame.math.Vector2(self.arma.rect.x,self.arma.rect.y)
         self.vel = pygame.math.Vector2(20* self.arma.player.direcao)
         self.lista_colisao = lista_colisao
-        self.image = pygame.Surface((10,10))
-        self.image.fill((50,0,255))
+        self.image = pygame.image.load("assets/img/armas/projetil.png")
 
         self.rect = self.image.get_rect()
         self.rect.x = self.pos[0]

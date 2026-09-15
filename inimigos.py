@@ -118,6 +118,7 @@ class inimigo_base(pygame.sprite.Sprite):
 
     def update(self):
         self.morrer()
-        self.fisica()
-        self.mover()
+        if not self.alvo.upando:
+            self.fisica()
+            self.mover()
         self.animacao()

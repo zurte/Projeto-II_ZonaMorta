@@ -1,6 +1,8 @@
 import pygame
 import sons
 import mapa
+import random
+import cards
 
 pygame.init()
 
@@ -48,6 +50,7 @@ class Player(pygame.sprite.Sprite):
         self.nivel = 1
         self.xp_atual = 0
         self.xp_meta = self.nivel * 50
+        self.upando = False
 
 
         self.pulando = False
@@ -122,6 +125,8 @@ class Player(pygame.sprite.Sprite):
             self.vida_atual = self.vida_max
             self.xp_meta = self.nivel * 50
             sons.som_de_subir_de_nivel.play()
+            self.upando = True
+            self.escolher_power_up()
 
     def movimento(self):
 
@@ -152,6 +157,10 @@ class Player(pygame.sprite.Sprite):
                 self.vel[0] -= 1
             elif self.vel[0] < 0:
                 self.vel[0] += 1
+
+        if self.upando:
+            self.vel[0] = 0
+            self.vel[1] = 0
     def pulo(self):
         tecla_pulo = pygame.key.get_just_pressed()[pygame.K_SPACE]
 
@@ -224,13 +233,28 @@ class Player(pygame.sprite.Sprite):
             self.image = self.image_grup[self.frame_atual]
             self.velocidade_animacao = 30
 
+    def escolher_power_up(self):
+        lista = []
+        if self.upando:
+            for i in range(3):
+                lista.append(random.choice(cards.power_ups))
+                print(lista)
+
+            for p,i in enumerate(lista):
+                card = i(self,self.tela,self.grupo,self.largura_tela//5 + (p*300),self.altura_tela//3)
+
     def update(self):
         self.barra_de_vida()
         self.barra_de_xp()
         self.subir_nivel()
         self.animacao()
-        self.movimento()
-        self.fisica()
-        self.pulo()
-        self.levar_dano()
+        
+        if not self.upando:
+            self.movimento()
+            self.fisica()
+            self.pulo()
+            self.levar_dano()
+
+            if pygame.key.get_just_pressed()[pygame.K_o]:
+                self.xp_atual += self.xp_meta
         
