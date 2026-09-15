@@ -26,7 +26,9 @@ class arma_base(pygame.sprite.Sprite):
         self.cd = 0
         self.recarregando = False
         self.tempo_recarga = 20
-        self.vel_recarga = 10
+        self.vel_recarga = self.tempo_recarga
+        self.dano = 1
+
 
     def mover(self):
         if self.player.direcao > 0:
@@ -60,8 +62,9 @@ class arma_base(pygame.sprite.Sprite):
         if self.vel_recarga <= 0:
             if (self.municao < self.municao_max) and self.recarregando:
                 self.municao += 1
+                
                 #tocar som de recarregar
-                self.vel_recarga = 10      
+                self.vel_recarga = self.tempo_recarga     
 
         if self.municao == self.municao_max:
             self.recarregando = False
@@ -87,7 +90,9 @@ class projetil_base(arma_base):
         self.grupo = self.arma.grupo
         self.add(self.grupo)
 
-        self.dano = 1
+        self.dano = self.arma.dano
+
+        
 
     def mover(self):
         self.pos[0] += self.vel[0]

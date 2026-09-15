@@ -1,4 +1,5 @@
 import pygame
+import armas
 
 class card_base(pygame.sprite.Sprite):
     def __init__(self,player,tela,grupo):
@@ -13,8 +14,10 @@ class card_base(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.add(self.grupo)
-
         
+
+    def bufar(self):
+        pass
 
     def verificar_click(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -26,11 +29,82 @@ class card_base(pygame.sprite.Sprite):
 
         if a and b:
             if mouse_click[0]:
-                print("ok")
+                self.bufar()
                 
 
     def update(self):
         self.verificar_click()
+        
+
+class card_aumentar_vida(card_base):
+    def __init__(self, player, tela, grupo):
+        super().__init__(player,tela,grupo)
+        self.bonus_vida = 30
+        self.image.fill((0,255,0))
+
+    def bufar(self):
+        self.player.vida_max += self.bonus_vida
+        self.player.vida_atual += self.bonus_vida
 
 
-    
+class card_vel_carregamento(card_base):
+    def __init__(self,player,tela,grupo):
+        super().__init__(player,tela,grupo)
+        self.image.fill((255,255,255))
+        self.bonus_recarga = 2
+
+    def bufar(self):
+        for i in self.grupo:
+            if i.__class__  == armas.arma_base:
+                i.tempo_recarga -= self.bonus_recarga
+
+class card_vel_mov(card_base):
+    def __init__(self,player,tela,grupo):
+        super().__init__(player,tela,grupo)
+
+        self.image.fill((255,255,0))
+
+        self.bonus_velocidade = 1
+
+    def bufar(self):
+        self.player.vel_max[0] += self.bonus_velocidade
+
+
+class card_cura(card_base):
+    def __init__(self, player, tela, grupo):
+        super().__init__(player, tela, grupo)
+
+        self.image.fill((0, 128, 255))
+        self.bonus_vida_atual = 50
+
+    def bufar(self):
+        self.player.vida_atual = min(
+            self.player.vida_atual + self.bonus_vida_atual,
+            self.player.vida_max,
+        )
+
+
+class card_dano_arma(card_base):
+    def __init__(self, player, tela, grupo):
+        super().__init__(player, tela, grupo)
+
+        self.image.fill((255, 128, 0))
+        self.bonus_dano = 5
+
+    def bufar(self):
+        for item in self.grupo:
+            if hasattr(item, "dano"):
+                item.dano += self.bonus_dano
+
+
+class card_velocidade_total(card_base):
+    def __init__(self, player, tela, grupo):
+        super().__init__(player, tela, grupo)
+
+        self.image.fill((180, 0, 255))
+        self.bonus_velocidade = 1
+
+    def bufar(self):
+        for eixo in range(len(self.player.vel_max)):
+            self.player.vel_max[eixo] += self.bonus_velocidade
+

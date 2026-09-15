@@ -76,13 +76,13 @@ class Player(pygame.sprite.Sprite):
             g = 255
         elif g <= 0:
             g = 0
-        pygame.draw.rect(self.tela,(0,0,0),(self.largura_tela*0.01,self.altura_tela*0.032,self.vida_max*3,20),border_radius=20)
-        pygame.draw.rect(self.tela,(r,g,b),(self.largura_tela*0.012,self.altura_tela*0.034,self.vida_atual*2.96,18),border_radius=20)
+        pygame.draw.rect(self.tela,(0,0,0),(self.largura_tela*0.01,self.altura_tela*0.032,self.vida_max*1.5,20),border_radius=20)
+        pygame.draw.rect(self.tela,(r,g,b),(self.largura_tela*0.012,self.altura_tela*0.034,self.vida_atual*1.46,18),border_radius=20)
 
     def barra_de_xp(self):
 
-        r = 100
-        g = 100
+        r = 150
+        g = 150
         b = 0
 
         # Calcula a largura da barra de XP com base na meta de XP

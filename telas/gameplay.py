@@ -24,7 +24,7 @@ class GamePlay:
         self.lista_objetos.add(self.lista_plataformas)
         self.player_obj = Player(self.tela.get_width()//2,400,self.lista_objetos,self.lista_plataformas,self.lista_inimigos,self.tela)
         self.arma_obj = arma_base(self.player_obj,self.lista_inimigos)
-        self.card = cards.card_base(self.player_obj,self.tela,self.lista_objetos)
+        self.card = cards.card_velocidade_total(self.player_obj,self.tela,self.lista_objetos)
         #Variaveis
         self.proxima_tela = "GamePlay"
         self.avancar = False
@@ -43,8 +43,20 @@ class GamePlay:
     def spaw_inimigo(self):
         self.timer_inimigo -= 1
         
+        limite_esq = self.LARGURA - self.player_obj.rect.x - 130
+        if limite_esq < 0:
+            limite_esq = 0
+
+        limite_dir = self.player_obj.rect.x + 130
+        if limite_dir > self.LARGURA:
+            limite_dir = self.LARGURA
+
         if len(self.lista_inimigos) < self.numero_inimigo_max:
-            x_inimigo = random.choice([random.randint(0,self.player_obj.rect.x - 100),random.randint(self.player_obj.rect.x + 100,1024)])
+            x_inimigo = random.choice([random.randint(0,limite_esq),random.randint(limite_dir, 1024)])
+            if x_inimigo < 0 :
+                x_inimigo = 0
+            elif x_inimigo > 1024:
+                x_inimigo = 1024
             if self.timer_inimigo <= 0:
                 inimigo = inimigo_base(self.lista_inimigos,self.lista_plataformas,self.player_obj,x_inimigo,464)
                 self.lista_objetos.add(inimigo)
@@ -57,8 +69,8 @@ class GamePlay:
 
     def mover_mapa(self):
         if self.player_obj.vel.x >= 0:
-            if self.player_obj.rect.centerx >= self.LARGURA // 2 and self.offset_x > self.max_offset_x:
-    
+            if self.player_obj.rect.centerx >= self.LARGURA // 2 and self.offset_x >= self.max_offset_x:
+                
                 self.velocidade_mapa = -self.player_obj.vel.x
                 self.offset_x += self.velocidade_mapa
                 self.player_obj.rect.centerx = self.LARGURA//2
@@ -100,7 +112,7 @@ class GamePlay:
         if self.mostrar_debug:
             mensagem = self.fonte.render(f"MAPA: Offset Mapa: {self.offset_x} / {self.max_offset_x} | velocidade mapa: {self.velocidade_mapa} ", True, (255, 0, 100))
             mensagem2 = self.fonte.render(f"PLAYER: Posição: {self.player_obj.pos} | Vida: {self.player_obj.vida_atual}/{self.player_obj.vida_max}| xp:{self.player_obj.xp_atual}/{self.player_obj.xp_meta} | nivel:{self.player_obj.nivel}", True, (255, 0, 100))
-            mensagem3 = self.fonte.render(f"ARMA: muniçao:{self.arma_obj.municao} | recarregando:{self.arma_obj.recarregando} ",True, (255, 0, 100))
+            mensagem3 = self.fonte.render(f"ARMA: muniçao:{self.arma_obj.municao} | recarregando:{self.arma_obj.recarregando} | tempo de recarga: {self.arma_obj.tempo_recarga}",True, (255, 0, 100))
 
             msg_lista = [mensagem,mensagem2,mensagem3]
             
