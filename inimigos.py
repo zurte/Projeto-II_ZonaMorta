@@ -1,5 +1,5 @@
 import pygame
-
+import sons
 pygame.init()
 
 spr_inimigo_mov_esq = [
@@ -112,6 +112,8 @@ class inimigo_base(pygame.sprite.Sprite):
     def morrer(self):
         if self.vida <= 0:
             self.alvo.xp_atual += self.xp
+            if not sons.canal_ganho_de_xp.get_busy():
+                sons.canal_ganho_de_xp.play(sons.som_ganho_de_xp)
             self.kill()
 
     def update(self):

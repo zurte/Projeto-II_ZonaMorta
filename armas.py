@@ -1,6 +1,6 @@
 import pygame
 import player
-
+import sons
 
 pygame.init()
 
@@ -52,6 +52,8 @@ class arma_base(pygame.sprite.Sprite):
                 tiro = projetil_base(self,self.lista_colisao)
                 self.municao -= 1
                 self.cd = 30
+                if not sons.canal_de_pistola.get_busy():
+                    sons.canal_de_pistola.play(sons.som_de_pistola,maxtime=400)
 
     def recarregar(self):
         if self.municao <= 0:
@@ -64,7 +66,10 @@ class arma_base(pygame.sprite.Sprite):
                 self.municao += 1
                 
                 #tocar som de recarregar
-                self.vel_recarga = self.tempo_recarga     
+                self.vel_recarga = self.tempo_recarga  
+                if not sons.canal_recarregando_pistola.get_busy():
+                    sons.canal_recarregando_pistola.play(sons.som_recarregando_pistola,maxtime=400)
+                   
 
         if self.municao == self.municao_max:
             self.recarregando = False

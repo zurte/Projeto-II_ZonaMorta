@@ -1,4 +1,5 @@
 import pygame
+import sons
 import mapa
 
 pygame.init()
@@ -120,6 +121,7 @@ class Player(pygame.sprite.Sprite):
             self.nivel += 1
             self.vida_atual = self.vida_max
             self.xp_meta = self.nivel * 50
+            sons.som_de_subir_de_nivel.play()
 
     def movimento(self):
 
@@ -133,11 +135,18 @@ class Player(pygame.sprite.Sprite):
             if self.vel[0] >= self.vel_max[0]:
                 self.vel[0] = self.vel_max[0]
             self.direcao = 1
+            if not sons.canal_passos.get_busy():
+                sons.canal_passos.play(sons.som_passos,maxtime=1000)
+            
         elif esquerda:
             self.vel[0] -= 1
             if self.vel[0] <= -self.vel_max[0]:
                 self.vel[0] = -self.vel_max[0]
             self.direcao = -1
+            if not sons.canal_passos.get_busy():
+                sons.canal_passos.play(sons.som_passos,maxtime=1000)
+
+            
         else:
             if self.vel[0] > 0:
                 self.vel[0] -= 1
