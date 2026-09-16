@@ -61,8 +61,11 @@ class Player(pygame.sprite.Sprite):
         self.cd = 0
         self.cd_pulo = 0
 
-    def barra_de_vida(self):
+        self.morto = False
 
+    def barra_de_vida(self):
+        if self.vida_atual <= 0:
+            self.morrer()
         mod = self.vida_max - self.vida_atual
 
         r = 0
@@ -157,10 +160,6 @@ class Player(pygame.sprite.Sprite):
                 self.vel[0] -= 1
             elif self.vel[0] < 0:
                 self.vel[0] += 1
-
-        if self.upando:
-            self.vel[0] = 0
-            self.vel[1] = 0
     def pulo(self):
         tecla_pulo = pygame.key.get_just_pressed()[pygame.K_SPACE]
 
@@ -235,6 +234,8 @@ class Player(pygame.sprite.Sprite):
 
     def escolher_power_up(self):
         lista = []
+        self.vel[0] = 0
+        self.vel[1] = 0
         if self.upando:
             for i in range(3):
                 lista.append(random.choice(cards.power_ups))
@@ -242,6 +243,10 @@ class Player(pygame.sprite.Sprite):
 
             for p,i in enumerate(lista):
                 card = i(self,self.tela,self.grupo,self.largura_tela//5 + (p*300),self.altura_tela//3)
+
+    def morrer(self):
+        self.morto = True
+        self.kill()
 
     def update(self):
         self.barra_de_vida()
@@ -256,5 +261,5 @@ class Player(pygame.sprite.Sprite):
             self.levar_dano()
 
             if pygame.key.get_just_pressed()[pygame.K_o]:
-                self.xp_atual += self.xp_meta
+                self.vida_atual = 0
         

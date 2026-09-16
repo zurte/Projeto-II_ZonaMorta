@@ -25,7 +25,7 @@ class GamePlay:
         self.player_obj = Player(self.tela.get_width()//2,400,self.lista_objetos,self.lista_plataformas,self.lista_inimigos,self.tela)
         self.arma_obj = arma_base(self.player_obj,self.lista_inimigos)
         #Variaveis
-        self.proxima_tela = "GamePlay"
+        self.proxima_tela = "GameOver"
         self.avancar = False
         self.sair = False
         self.mostrar_debug = False
@@ -133,4 +133,8 @@ class GamePlay:
         self.mover_mapa()
         self.debug()
         self.janela.flip()
+        if self.player_obj.morto:
+            self.avancar = True
+
+            
         

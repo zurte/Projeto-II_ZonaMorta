@@ -2,7 +2,8 @@ import pygame
 
 
 import telas.menu as menu
-import telas.gameplay as gameplay   
+import telas.gameplay as gameplay
+import telas.gameover as gameover   
 from jogo import Jogo
 
 pygame.init()
@@ -12,11 +13,11 @@ janela = pygame.Window("Projeto II", (1024,720))#Janela
 
 state = {
     "Menu": menu.Menu(janela),
-    "GamePlay": gameplay.GamePlay(janela)
-    #"GameOver": gameplay.GameOver(janela)
+    "GamePlay": gameplay.GamePlay(janela),
+    "GameOver": gameover.GameOver(janela)
 }
 
-jogo = Jogo(state)
+jogo = Jogo(janela,state)
 jogo.run()
 
 
