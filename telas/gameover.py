@@ -7,7 +7,7 @@ class GameOver:
         self.opcao = ["tentar novemente", "voltar ao menu"]
         self.opcao_atual = 0
         self.font = pygame.font.Font(None, 36)
-        self.proxima_tela = "GamePlay"
+        self.proxima_tela = None
         self.avancar = False
         self.sair = False
         
@@ -49,8 +49,10 @@ class GameOver:
 
         elif tecla[pygame.K_RETURN]:
             if self.opcao_atual == 0:
+                self.proxima_tela = "GamePlay"
                 self.avancar = True 
                 
             else:
-                self.sair = True
+                self.proxima_tela = "Menu"
+                self.avancar = True
             
