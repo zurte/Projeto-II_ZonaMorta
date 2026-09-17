@@ -125,7 +125,6 @@ class Player(pygame.sprite.Sprite):
         if self.xp_atual >= self.xp_meta:
             self.xp_atual -= self.xp_meta
             self.nivel += 1
-            self.vida_atual = self.vida_max
             self.xp_meta = self.nivel * 50
             sons.som_de_subir_de_nivel.play()
             self.upando = True
@@ -261,5 +260,5 @@ class Player(pygame.sprite.Sprite):
             self.levar_dano()
 
             if pygame.key.get_just_pressed()[pygame.K_o]:
-                self.vida_atual = 0
+                self.xp_atual = self.xp_meta
         

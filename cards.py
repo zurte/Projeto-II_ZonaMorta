@@ -8,6 +8,8 @@ class card_base(pygame.sprite.Sprite):
         self.player = player
         self.tela = tela
         self.grupo = grupo
+        self.x = x
+        self.y = y
 
         self.image = pygame.surface.Surface((60,100))
         self.image.fill((0,0,0))
@@ -41,6 +43,9 @@ class card_base(pygame.sprite.Sprite):
                 sons.canal_de_selecionar_power_up.play(sons.som_de_selecionar_power_up)
             self.kill()
     def update(self):
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
         self.verificar_click()
         self.sumir()
         
@@ -49,7 +54,9 @@ class card_aumentar_vida(card_base):
     def __init__(self, player, tela, grupo, x, y):
         super().__init__(player, tela, grupo, x, y)
         self.bonus_vida = 30
-        self.image.fill((0,255,0))
+        self.image = pygame.image.load("assets/img/cards/card_colete.png")
+        self.image = pygame.transform.scale2x(self.image)
+        
 
     def bufar(self):
         self.player.vida_max += self.bonus_vida
@@ -61,7 +68,8 @@ class card_vel_carregamento(card_base):
         super().__init__(player, tela, grupo, x, y)
         self.image.fill((255,255,255))
         self.bonus_recarga = 2
-
+        self.image = pygame.image.load("assets/img/cards/card_recarga.png")
+        self.image = pygame.transform.scale2x(self.image)
     def bufar(self):
         for i in self.grupo:
             if i.__class__  == armas.arma_base:
@@ -71,7 +79,8 @@ class card_vel_mov(card_base):
     def __init__(self, player, tela, grupo, x, y):
         super().__init__(player, tela, grupo, x, y)
 
-        self.image.fill((255,255,0))
+        self.image = pygame.image.load("assets/img/cards/card_energetico.png")
+        self.image = pygame.transform.scale2x(self.image)
 
         self.bonus_velocidade = 1
 
@@ -83,7 +92,8 @@ class card_cura(card_base):
     def __init__(self, player, tela, grupo, x, y):
         super().__init__(player, tela, grupo, x, y)
 
-        self.image.fill((0, 128, 255))
+        self.image = pygame.image.load("assets/img/cards/card_kit_médico.png")
+        self.image = pygame.transform.scale2x(self.image)
         self.bonus_vida_atual = 50
 
     def bufar(self):
@@ -97,7 +107,8 @@ class card_dano_arma(card_base):
     def __init__(self, player, tela, grupo, x, y):
         super().__init__(player, tela, grupo, x, y)
 
-        self.image.fill((255, 128, 0))
+        self.image = pygame.image.load("assets/img/cards/card_dano.png")
+        self.image = pygame.transform.scale2x(self.image)
         self.bonus_dano = 5
 
     def bufar(self):
@@ -106,24 +117,11 @@ class card_dano_arma(card_base):
                 item.dano += self.bonus_dano
 
 
-class card_velocidade_total(card_base):
-    def __init__(self, player, tela, grupo, x, y):
-        super().__init__(player, tela, grupo, x, y)
-
-        self.image.fill((180, 0, 255))
-        self.bonus_velocidade = 1
-
-    def bufar(self):
-        for eixo in range(len(self.player.vel_max)):
-            self.player.vel_max[eixo] += self.bonus_velocidade
-
-
 
 power_ups = [
     card_aumentar_vida,
     card_vel_carregamento,
     card_vel_mov,
     card_cura,
-    card_dano_arma,
-    card_velocidade_total
+    card_dano_arma
 ]
