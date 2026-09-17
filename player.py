@@ -88,8 +88,8 @@ class Player(pygame.sprite.Sprite):
 
     def barra_de_xp(self):
 
-        r = 150
-        g = 150
+        r = 220
+        g = 220
         b = 0
 
         # Calcula a largura da barra de XP com base na meta de XP
@@ -105,10 +105,12 @@ class Player(pygame.sprite.Sprite):
         if not self.invuneravel:
             for i in colisor:
                 self.vel[0] += i.vel[0]*10
-                self.vel[1] -= 10
+                self.vel[1] -= 5
                 self.vida_atual -= i.dano
                 self.invuneravel = True
                 self.tempo_invuneravel = 90
+                if not sons.canal_personagem.get_busy():
+                    sons.canal_personagem.play(random.choice(sons.sons_personagem_levando_dano))
 
         if self.tempo_invuneravel > 0:
             self.tempo_invuneravel -= 1

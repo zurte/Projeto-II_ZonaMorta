@@ -1,5 +1,5 @@
 import pygame
-
+import sons
 
 class Jogo:
     def __init__(self, janela,telas):
@@ -7,6 +7,10 @@ class Jogo:
         self.telas = telas
         self.tela_atual = "Menu"
         self.running = True
+        self.musica = sons.som_musica
+        self.musica.set_volume(0.3)
+        self.tocar_musica = sons.canal_musica.play(self.musica,-1)
+        
     
     def mudar_tela(self, nome_tela):
         if nome_tela in self.telas:

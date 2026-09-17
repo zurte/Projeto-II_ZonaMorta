@@ -14,8 +14,18 @@ class GamePlay:
         self.tela = self.janela.get_surface()
         self.LARGURA = self.tela.get_width()
         self.ALTURA = self.tela.get_height()
-
-       
+        self.vel_bg = 6
+        self.bg_atual = 0
+        self.backgrounds = [
+            pygame.image.load("assets/img/telas/bg_gameplay1.png"),
+            pygame.image.load("assets/img/telas/bg_gameplay2.png"),
+            pygame.image.load("assets/img/telas/bg_gameplay3.png"),
+        ]
+        for indice, background in enumerate(self.backgrounds):
+            self.backgrounds[indice] = pygame.transform.scale(
+                background, (self.LARGURA, self.ALTURA - 192)
+            )
+        self.image = self.backgrounds[self.bg_atual]
         #listas e objetos
         self.lista_inimigos = pygame.sprite.Group()
         self.lista_plataformas = pygame.sprite.Group()#Lista de blocos do mapa
@@ -40,30 +50,39 @@ class GamePlay:
         self.msg_atual= 0
 
     def spaw_inimigo(self):
-        self.timer_inimigo -= 1
-        
-        limite_esq = self.LARGURA - self.player_obj.rect.x - 130
-        if limite_esq < 0:
-            limite_esq = 0
+        if not self.player_obj.upando:
+            self.timer_inimigo -= 1
+            
+            limite_esq = self.LARGURA - self.player_obj.rect.x - 130
+            if limite_esq < 0:
+                limite_esq = 0
 
-        limite_dir = self.player_obj.rect.x + 130
-        if limite_dir > self.LARGURA:
-            limite_dir = self.LARGURA
+            limite_dir = self.player_obj.rect.x + 130
+            if limite_dir > self.LARGURA:
+                limite_dir = self.LARGURA
 
-        if len(self.lista_inimigos) < self.numero_inimigo_max:
-            x_inimigo = random.choice([random.randint(0,limite_esq),random.randint(limite_dir, 1024)])
-            if x_inimigo < 0 :
-                x_inimigo = 0
-            elif x_inimigo > 1024:
-                x_inimigo = 1024
-            if self.timer_inimigo <= 0:
-                inimigo = inimigo_base(self.lista_inimigos,self.lista_plataformas,self.player_obj,x_inimigo,464)
-                self.lista_objetos.add(inimigo)
-                self.timer_inimigo = 60
+            if len(self.lista_inimigos) < self.numero_inimigo_max:
+                x_inimigo = random.choice([random.randint(0,limite_esq),random.randint(limite_dir, 1024)])
+                if x_inimigo < 0 :
+                    x_inimigo = 0
+                elif x_inimigo > 1024:
+                    x_inimigo = 1024
+                if self.timer_inimigo <= 0:
+                    inimigo = inimigo_base(self.lista_inimigos,self.lista_plataformas,self.player_obj,x_inimigo,464)
+                    self.lista_objetos.add(inimigo)
+                    self.timer_inimigo = 60
 
     def draw(self):
         
         self.tela.fill((100,100,100))
+        self.vel_bg -= 1
+        if self.vel_bg <= 0:
+            self.bg_atual += 1
+            if self.bg_atual > 2:
+                self.bg_atual = 0
+            self.vel_bg = 6
+        self.image = self.backgrounds[self.bg_atual]
+        self.tela.blit(self.image)
         self.lista_objetos.draw(self.tela)  
 
     def mover_mapa(self):

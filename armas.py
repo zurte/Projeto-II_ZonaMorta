@@ -1,6 +1,7 @@
 import pygame
 import player
 import sons
+import random
 
 pygame.init()
 
@@ -106,6 +107,8 @@ class projetil_base(arma_base):
         colisor = pygame.sprite.spritecollide(self,self.lista_colisao,False)
         for i in colisor:
             i.vida -= self.dano
+            if not sons.canal_zumbi.get_busy():
+                sons.canal_zumbi.play(random.choice(sons.sons_zumbi_levando_dano))
             self.kill()
         
         

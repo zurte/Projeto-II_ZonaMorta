@@ -1,5 +1,6 @@
 import pygame
 import sons
+import random
 pygame.init()
 
 spr_inimigo_mov_esq = [
@@ -20,7 +21,6 @@ class inimigo_base(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(x=x,y=y)
         self.vel = pygame.Vector2(0,0)
         self.alvo = alvo
-        self.deley_movimento = 5
 
         self.grupo = grupo
 
@@ -41,6 +41,9 @@ class inimigo_base(pygame.sprite.Sprite):
         self.dano = 10
         self.xp = 10
 
+        self.emitir_som_deley = 60
+        self.emitir_som = self.emitir_som_deley
+
     def mover(self):
         if self.rect.x > self.alvo.rect.x:
             self.vel[0] = -1
@@ -50,7 +53,6 @@ class inimigo_base(pygame.sprite.Sprite):
             self.vel[0] = 1
             self.rect.x += self.vel[0]
             self.pos[0] = self.rect.x
-        self.deley_movimento = 60
 
     def fisica(self):
         sensor = self.rect.move(0,1)
@@ -112,13 +114,24 @@ class inimigo_base(pygame.sprite.Sprite):
     def morrer(self):
         if self.vida <= 0:
             self.alvo.xp_atual += self.xp
-            if not sons.canal_ganho_de_xp.get_busy():
-                sons.canal_ganho_de_xp.play(sons.som_ganho_de_xp)
+            if not sons.canal_zumbi.get_busy():
+                sons.canal_zumbi.play(random.choice(sons.sons_zumbi_morrendo))
+            if not sons.canal_de_subir_de_nivel.get_busy():
+                sons.canal_de_subir_de_nivel.play(sons.som_ganho_de_xp)
             self.kill()
+
+    def rosnar(self):
+        self.emitir_som -= 1
+
+        if self.emitir_som <= 0:
+            if not sons.canal_zumbi.get_busy():
+                sons.canal_zumbi.play(random.choice(sons.sons_zumbi))
+                self.emitir_som = self.emitir_som_deley
 
     def update(self):
         self.morrer()
         if not self.alvo.upando:
             self.fisica()
             self.mover()
+            self.rosnar()
         self.animacao()
