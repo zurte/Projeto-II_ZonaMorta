@@ -1,4 +1,5 @@
 import pygame
+import sons
 
 class GameOver:
     def __init__(self,janela):
@@ -6,6 +7,7 @@ class GameOver:
         self.tela = self.janela.get_surface()
         self.opcao = ["tentar novemente", "voltar ao menu"]
         self.opcao_atual = 0
+        self.bg = pygame.image.load("assets/img/telas/game_over.png")
         self.font = pygame.font.Font(None, 36)
         self.proxima_tela = None
         self.avancar = False
@@ -27,8 +29,16 @@ class GameOver:
 
     def draw(self):
         self.tela.fill((0,0,0))
-        self.tela.blit(self.get_text()[0],(self.tela.get_width()//2,self.tela.get_height()//2 + (0 * 50)))
-        self.tela.blit(self.get_text()[1],(self.tela.get_width()//2,self.tela.get_height()//2 + (1 * 50)))
+        self.tela.blit(self.bg)
+        textos = self.get_text()
+        centro_x = self.tela.get_width() // 2
+        centro_y = self.tela.get_height() // 2
+
+        for indice, texto in enumerate(textos):
+            posicao = texto.get_rect(
+                center=(centro_x, centro_y + indice * 50)
+            )
+            self.tela.blit(texto, posicao)
         self.janela.flip()
     
 

@@ -4,6 +4,7 @@ pygame.mixer.init()
 
 #Musica de fundo
 som_musica = pygame.mixer.Sound("assets/sdf/Space Cadet.ogg")
+som_game_over = pygame.mixer.Sound("assets/sdf/Game over.mp3")
 
 #Dublagem personagem
 som_personagem_levando_dano_1 = pygame.mixer.Sound("assets/sdf/dublagem/Audio Personagem tomando Dano 1.wav")

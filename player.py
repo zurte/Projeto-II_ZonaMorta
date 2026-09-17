@@ -263,4 +263,5 @@ class Player(pygame.sprite.Sprite):
 
             if pygame.key.get_just_pressed()[pygame.K_o]:
                 self.xp_atual = self.xp_meta
-        
+            if pygame.key.get_just_pressed()[pygame.K_p]:
+                self.vida_atual -= self.vida_max

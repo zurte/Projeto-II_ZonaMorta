@@ -16,6 +16,10 @@ class Jogo:
         if nome_tela in self.telas:
             self.tela_atual = nome_tela
             print(f"mudou para:{self.tela_atual}")
+            if self.tela_atual == "GameOver":
+                sons.canal_musica.stop()
+                self.musica = sons.som_game_over
+                self.tocar_musica = sons.canal_musica.play(self.musica)
         else:
             print("erro em mudar de tela")
     
@@ -26,7 +30,10 @@ class Jogo:
             clock.tick(60)
             
             tela_obj = self.telas[self.tela_atual]
-            
+            if self.tela_atual != "GameOver":
+                self.musica = sons.som_musica
+                if not sons.canal_musica.get_busy():
+                    self.tocar_musica = sons.canal_musica.play(self.musica,-1)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
