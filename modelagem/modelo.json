@@ -1,0 +1,108 @@
+{
+  "tabelas": [
+    {
+      "nome": "player",
+      "colunas": [
+        {
+          "nome": "id",
+          "tipo": "INTEGER",
+          "pk": true
+        },
+        {
+          "nome": "vida",
+          "tipo": "INTEGER"
+        },
+        {
+          "nome": "velocidade",
+          "tipo": "INTEGER"
+        }
+      ],
+      "x": 161,
+      "y": 26
+    },
+    {
+      "nome": "zumbis",
+      "colunas": [
+        {
+          "nome": "id",
+          "tipo": "INTEGER",
+          "pk": true
+        },
+        {
+          "nome": "vida",
+          "tipo": "INTEGER"
+        },
+        {
+          "nome": "velocidade",
+          "tipo": "TEXT"
+        },
+        {
+          "nome": "dano",
+          "tipo": "INTEGER"
+        }
+      ],
+      "x": 344,
+      "y": 5
+    },
+    {
+      "nome": "cards",
+      "colunas": [
+        {
+          "nome": "id",
+          "tipo": "INTEGER",
+          "pk": true
+        },
+        {
+          "nome": "buff",
+          "tipo": "TEXT"
+        },
+        {
+          "nome": "somir",
+          "tipo": "TEXT"
+        }
+      ],
+      "x": 354,
+      "y": 19
+    },
+    {
+      "nome": "armas",
+      "colunas": [
+        {
+          "nome": "id",
+          "tipo": "INTEGER",
+          "pk": true
+        },
+        {
+          "nome": "municao",
+          "tipo": "INTEGER"
+        },
+        {
+          "nome": "tempo_de_recarga",
+          "tipo": "REAL"
+        }
+      ],
+      "x": 352,
+      "y": 12
+    },
+    {
+      "nome": "municoes",
+      "colunas": [
+        {
+          "nome": "id",
+          "tipo": "INTEGER",
+          "pk": true
+        },
+        {
+          "nome": "dano",
+          "tipo": "INTEGER"
+        },
+        {
+          "nome": "velocidade",
+          "tipo": "INTEGER"
+        }
+      ],
+      "x": 334,
+      "y": 35
+    }
+  ]
+}
